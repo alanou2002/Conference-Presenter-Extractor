@@ -42,13 +42,16 @@ def run_agentql_query(url: str) -> list[dict]:
     result = response.json()
     return result.get("data", {}).get("presenters", [])
 
-st.title("📄 AgentQL Conference Presenter Extractor")
+st.title("📄 Conference Presenter Extractor")
 
-url = st.text_input("Enter Conference Program URL")
+# Step 1: Create a form with a text input and a submit button
+with st.form("query_form"):
+    url = st.text_input("Enter Conference Program URL")
+    submitted = st.form_submit_button("Run Query")
 
 if not API_KEY:
     st.error("❌ Missing API key. Please set AGENTQL_API_KEY in secrets.toml.")
-elif url:
+elif submitted:
     with st.spinner("Querying AgentQL..."):
         try:
             data = run_agentql_query(url)
@@ -57,9 +60,7 @@ elif url:
             if df.empty:
                 st.warning("⚠️ No presenter data found. Try a different URL or adjust your query.")
             else:
-		# ✅ Remove columns with all null values
                 df = df.dropna(axis=1, how="all")
-		    
                 st.success("✅ Data extracted!")
                 st.dataframe(df)
 
