@@ -18,12 +18,12 @@ def run_agentql_query(url: str) -> list[dict]:
             {
                 presenters[] {
                     Date (date of presentation MM/DD/YYYY format)
- 		            Time (start time of presentation)
-                    First_Presenter (full name of the first presenter if there are multiple)
+ 		    Time (start time of presentation)
+                    First_Presenter 
                     Title (title of the paper being presented)
                     Affiliation (school or company or lab affiliated with the first presenter)
-		            Session (session ID or session name if available)
-		            Location (room #, conference hall/floor, building, etc)
+		    Session (session ID or session name if available)
+		    Location (room #, conference hall/floor, building, etc)
                 }
             }
         """,
@@ -57,6 +57,9 @@ elif url:
             if df.empty:
                 st.warning("⚠️ No presenter data found. Try a different URL or adjust your query.")
             else:
+		# ✅ Remove columns with all null values
+                df = df.dropna(axis=1, how="all")
+		    
                 st.success("✅ Data extracted!")
                 st.dataframe(df)
 
