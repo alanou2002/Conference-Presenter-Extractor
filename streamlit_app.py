@@ -17,9 +17,13 @@ def run_agentql_query(url: str) -> list[dict]:
         "query": """
             {
                 presenters[] {
-                    name
-                    title
-                    affiliation
+                    Date (date of presentation MM/DD/YYYY format)
+ 		            Time (start time of presentation)
+                    First_Presenter (full name of the first presenter if there are multiple)
+                    Title (title of the paper being presented)
+                    Affiliation (school or company or lab affiliated with the first presenter)
+		            Session (session ID or session name if available)
+		            Location (room #, conference hall/floor, building, etc)
                 }
             }
         """,
